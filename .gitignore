@@ -1,0 +1,17 @@
+# Remix compiler artifacts
+**/artifacts/
+**/artifacts/**
+
+# Remix plugin state folders
+.deps/
+.states/
+.git/
+
+# Debug info
+*.dbg.json
+*.tsbuildinfo
+*.prettierrc.json
+
+# Optional
+.env
+.env.local
