@@ -1,0 +1,2 @@
+BiToken: 部署sepolia 测试网地址：
+0x40acFF96828838DC19901006ea6f6a186fEB4723
