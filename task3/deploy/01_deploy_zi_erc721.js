@@ -7,16 +7,16 @@ module.exports = async({getNamedAccounts,deployments})=>{
     const{ save,deploy,log } = deployments
 
     // 从ethers 中获取合约工厂
-    const ziToken  = await ethers.getContractFactory("ZiToken")
+    //const ziToken  = await ethers.getContractFactory("ZiERC721Token")
 
     // 使用deploy 方法进行部署
-    log("deploying the ZiToken nft Contract")
-    await deploy("ZiToken",{
+    log("deploying the ZiERC721Token nft Contract")
+    await deploy("ZiERC721Token",{
         from:deployer,
         args:[deployer],
         log:true
     })
-    log("deployed the ZiToken nft Contract")
+    log("deployed the ZiERC721Token nft Contract")
 }
 
-module.exports.tags = ["all","ZiToken"]
+module.exports.tags = ["all","ZiERC721Token"]

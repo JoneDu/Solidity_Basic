@@ -8,11 +8,11 @@ import {ERC721Enumerable} from "@openzeppelin/contracts/token/ERC721/extensions/
 import {ERC721URIStorage} from "@openzeppelin/contracts/token/ERC721/extensions/ERC721URIStorage.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 
-contract ZiToken is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Ownable {
+contract ZiERC721Token is ERC721, ERC721Enumerable, ERC721URIStorage, ERC721Burnable, Ownable {
     uint256 private _nextTokenId;
 
     constructor(address initialOwner)
-        ERC721("ZiToken", "ZTK")
+        ERC721("ZiERC721Token", "ZTK")
         Ownable(initialOwner)
     {}
 
