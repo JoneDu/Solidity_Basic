@@ -4,11 +4,17 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
 import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {AggregatorV3Interface} from "@chainlink/contracts/src/v0.8/shared/interfaces/AggregatorV3Interface.sol";
-
+import "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
 
 
 // 这是一个NFT拍卖场，会有多个拍卖
-contract NFTAuction {
+// 继承 initializable 进行可升级合约改造
+contract NFTAuction is Initializable {
+
+    function initialize ()  public initializer {
+        admin = msg.sender;
+    }
+
      // 创建一个结构体用来存储拍卖信息
      struct Auction {
         uint256 auctionId;
@@ -100,6 +106,7 @@ contract NFTAuction {
         require(auction.seller != address(0),"this auction is not found");
         require(block.timestamp>= auction.startTime,"this auction is not start");
         require(block.timestamp<= auction.startTime+auction.duration,"this auction is already end");
+        require(!auction.ended,"this auction is ended!");
 
         // 需要当前出价要大于目前最高的出价,和起拍价格.
         // 使用 openzepplin 的喂价系统.获取预言机中的 美元换算价格.
@@ -136,5 +143,28 @@ contract NFTAuction {
      }
 
      // 结束拍卖
+     // 任何人在拍卖结束时候都可以进行拍卖
+     // 如果出价没有满足starPrice ,NFT 退还给seller
+     // 否则将NFT 给到最高出价人,并把钱给到seller.
+     function endAuction(uint256 auctionId) external {
+        Auction storage a =  auctions[auctionId];
+        require(a.seller != address(0),"not found auction!");
+        require(block.timestamp>= a.startTime + a.duration,"auction not ended");
+        require(!a.ended,"action already ended!");
+
+        if(a.highestBid == 0 && a.highestBidder == address(0)){
+            IERC721(a.nftAddress).safeTransferFrom(address(this),a.seller,a.tokenId);
+        }else{
+            IERC721(a.nftAddress).safeTransferFrom(address(this),a.highestBidder,a.tokenId);
+            // 将买家token 转给 seller
+            if(a.paymentTokenAddress == address(0)){
+                payable(a.seller).transfer(a.highestBid);
+            }else{
+                IERC20(a.paymentTokenAddress).transfer(a.seller,a.highestBid);
+            }
+        }
+
+        a.ended = true;
+     }
 
 }
