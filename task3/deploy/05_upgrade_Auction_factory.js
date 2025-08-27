@@ -17,4 +17,4 @@ module.exports = async({deployments,getNamedAccounts})=>{
     const v2implAddr= await upgrades.erc1967.getImplementationAddress(proxyUpgradedAddr)
     log("AuctionFactoryBeaconProxyUpgraded implAddress:: ",v2implAddr)
 }
-module.exports.tags = ["all","AuctionFactoryBeaconProxyUpgraded"]
+module.exports.tags = ["upgrade","AuctionFactoryBeaconProxyUpgraded"]
