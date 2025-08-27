@@ -1,7 +1,8 @@
 // SPDX-License-Identifier: SEE LICENSE IN LICENSE
 pragma solidity ^0.8.0;
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import {Initializable} from "@openzeppelin/contracts-upgradeable/proxy/utils/Initializable.sol";
+import {OwnableUpgradeable} from "@openzeppelin/contracts-upgradeable/access/OwnableUpgradeable.sol";
 import "@openzeppelin/contracts/proxy/beacon/UpgradeableBeacon.sol";
 import "@openzeppelin/contracts/proxy/beacon/BeaconProxy.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721.sol";
@@ -21,8 +22,8 @@ interface IERC20Metadata {
  *  - 创建单场拍卖：部署 BeaconProxy，并调用 initialize(...)
  *  - 将 NFT 从卖家安全转入新拍卖合约（需卖家先对工厂授权）
  */
-contract AuctionFactoryBeacon is Ownable {
-    UpgradeableBeacon public immutable beacon;
+contract AuctionFactoryBeacon is Initializable, OwnableUpgradeable {
+    UpgradeableBeacon public  beacon;
 
     //喂价
     mapping(address=>AggregatorV3Interface) public priceFeeds;
@@ -37,8 +38,10 @@ contract AuctionFactoryBeacon is Ownable {
     event AuctionCreated(address indexed seller, address indexed nft, uint256 indexed tokenId, address auction, uint256 duration, uint256 startPriceUsd);
     event PriceFeedUpdated(address indexed token, address indexed feed);
 
-    constructor(address initialImpl) Ownable(msg.sender) {
+    function initialize(address initialImpl) initializer public {
         require(initialImpl != address(0),"initialImpl = 0");
+        __Ownable_init(msg.sender); 
+
         // beacon 的owner 是工厂本身
         beacon = new UpgradeableBeacon(initialImpl,address(this));
     }
