@@ -4,6 +4,7 @@ module.exports = async({deployments,getNamedAccounts})=>{
 
     log("ziERC20Token deploying")
     const ziERC20Token = await deploy("ZiERC20Token",{
+        contract:"ZiERC20Token",
         from:deployer,
         args:[],
         log:true

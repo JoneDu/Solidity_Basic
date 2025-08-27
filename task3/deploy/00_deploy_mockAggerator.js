@@ -13,6 +13,9 @@ module.exports=async ({deployments,getNamedAccounts})=>{
         args: [DECIMAL, ETH_INITIAL_ANSWER],
         log: true
         })
+        // 打印合约地址
+        const mockV3AggregatorEth = await ethers.getContract("MockV3AggregatorEth")
+        log("MockV3AggregatorEth deployed to:", mockV3AggregatorEth.target)
 
         await deploy("MockV3AggregatorUsdt", {
         contract:"MockV3Aggregator",
@@ -20,6 +23,9 @@ module.exports=async ({deployments,getNamedAccounts})=>{
         args: [DECIMAL, USDT_INITIAL_ANSWER],
         log: true
         })
+        // 打印合约地址
+        const mockV3AggregatorUsdt = await ethers.getContract("MockV3AggregatorUsdt")
+        log("MockV3AggregatorUsdt deployed to:", mockV3AggregatorUsdt.target)
         // 将以上两个合约save
         log("MockV3Aggregator deployed")
     }else{
