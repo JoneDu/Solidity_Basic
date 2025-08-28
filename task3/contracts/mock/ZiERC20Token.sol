@@ -10,4 +10,8 @@ contract ZiERC20Token is ERC20, ERC20Permit {
         // 给部署者铸造 20000枚.
         _mint(msg.sender,20000 * 10 ** 18);
     }
+
+    function mint(address to, uint256 amount) public {
+        _mint(to, amount);
+    }
 }

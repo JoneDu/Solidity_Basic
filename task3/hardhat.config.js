@@ -23,6 +23,13 @@ module.exports = {
       url:SEPOLIA_RPC_URL,
       accounts:[PRIVATE_KEY,PRIVATE_KEY1],
       chainId:11155111
+    },
+    hardhat:{
+      // 把测试用的 in-memory 网络也写磁盘
+      saveDeployments: true,
+      // 指定写到哪个目录
+      deployments: "./deployments/hardhat",
+      chainId:31337
     }
   }
 };

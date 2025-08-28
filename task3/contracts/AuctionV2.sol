@@ -7,6 +7,8 @@ contract AuctionV2 is Auction {
 
     string public testName;
 
+    string public constant hello = "hello Test!";
+
     function setTestName(string memory _name) public {
         testName = _name;
     }

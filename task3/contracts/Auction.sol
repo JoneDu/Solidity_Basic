@@ -155,7 +155,7 @@ contract Auction is Initializable,ReentrancyGuardUpgradeable,IERC721Receiver {
      function endAuction() external nonReentrant{
         require(nftDeposited,"nft not deposited");
         require(block.timestamp>= startTime + duration,"auction not ended");
-        require(!ended,"action already ended!");
+        require(!ended,"auction already ended!");
 
         ended = true;
 
