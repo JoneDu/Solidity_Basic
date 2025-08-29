@@ -217,6 +217,11 @@ describe("Auction Test",async()=>{
     const signerUser1 = await ethers.getSigner(user1);
 
     await auction.connect(signerUser1).endAuction()
+
+    // 查验NFT 归属 user2
+    expect(await ZiERC721Token.ownerOf(0)).to.equal(user2);
+    // 查验ERC20 归属 seller
+    expect(await ZiERC20Token.balanceOf(deployer)).to.equal(ethers.parseEther("20200"));
   });
 
 
